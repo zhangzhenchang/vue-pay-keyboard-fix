@@ -61,7 +61,7 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yucccc/vue-pay-keyboard.git"
+    "url": "https://github.com/zhangzhenchang/vue-pay-keyboard-fix.git"
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
