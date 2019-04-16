@@ -36,6 +36,7 @@
     "url": "https://github.com/yucccc/vue-pay-keyboard/issues"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.3.3",
     "vue-pay-keyboard": "^1.1.2"
   },
@@ -57,7 +58,7 @@
   "homepage": "https://github.com/yucccc/vue-pay-keyboard#readme",
   "license": "MIT",
   "main": "dist/vue-pay-keyboard.js",
-  "name": "vue-pay-keyboard-fix",
+  "name": "vue-pay-keyboard-fix2",
   "private": false,
   "repository": {
     "type": "git",

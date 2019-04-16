@@ -12,6 +12,17 @@
                 </span>
             </div>
             <!--输入的密码-->
+            <div class="notice-box" v-if="isNoticeBox">
+                <span class="tab-change" v-if="isPassword" @click="tabChange" style="margin-bottom: 30px">短信验证码验证>></span>
+                <span class="tab-change" v-else @click="tabChange">交易密码验证>></span>
+                <div style="clear: both"></div>
+                <div class="code-send" v-if="!isPassword">
+                    <p>请输入尾号为{{phone?phone.substring(7,11):phone}}的短信验证码</p>
+                    <div class="get_code" @click="getPhoneCode" v-if="codeValue">发送</div>
+                    <div class="count_down" v-else>{{second}}</div>
+                </div>
+            </div>
+
             <div class="pas-box v-1px" v-show="keyShow">
                 <div v-for="(pas,i) in pasDigits" :key="i" :class="{'v-1px-l':i>0}">
                     <input type="password" :value="val[i]" disabled>
@@ -51,6 +62,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
+const querystring = require('querystring');
 let timer = null;
 export default {
     name: 'vue-pay-keyboard',
@@ -70,6 +83,10 @@ export default {
         isPay: {
             type: Boolean,
             default: false
+        },
+        phone: {
+            type: String,
+            default: ""
         }
     },
     data() {
@@ -83,13 +100,19 @@ export default {
                 [4, 5, 6],
                 [7, 8, 9]
             ],
-            payStatus: false
+            payStatus: false,
+            isNoticeBox: true,
+            isPassword: true,
+            codeValue: true,
+            second: 60,// 发送验证码倒计时
         }
+    },
+    mounted() {
     },
     computed: {
         payStatusText() {
             return this.payStatus ? '支付成功!' : '支付失败,请重输密码!'
-        }
+        },
     },
     methods: {
         inputEnd(e, d) {
@@ -119,9 +142,10 @@ export default {
                     this.lodingShow = true;
                     this.$refs.loading.classList.add('loading-ani')
                     this.val = [];
+                    this.isNoticeBox = false
                 }
             } else {
-                this.$emit('pas-end', this.val.join(''))
+                this.$emit('pas-end', this.val.join(''));
             }
             // 设置高亮
             this.highlight(e.currentTarget)
@@ -133,7 +157,10 @@ export default {
             }
         },
         close() {
-            this.$emit('close')
+            this.$emit('close');
+            this.codeValue = true;
+            this.second = 60;
+            window.clearInterval(this.interval);
         },
         $payStatus(flag) {
             if (typeof flag != 'boolean') return;
@@ -156,7 +183,40 @@ export default {
                     this.$refs.loading.classList.remove('loading-ani')
                 }, 800)
             }
-        }
+        },
+        tabChange(){
+            this.isPassword = !this.isPassword;
+            if (this.isPassword) {
+                this.pasDigits = 5;
+            }else{
+                this.pasDigits = 4;
+            }
+        },
+        //获取短信验证码
+        getPhoneCode() {
+            //倒计时
+            let that = this;
+            that.codeValue = false;
+            that.interval = window.setInterval(function () {
+                if ((that.second--) <= 0) {
+                    that.second = 60;
+                    that.codeValue = true;
+                    window.clearInterval(that.interval);
+                }
+            }, 1000);
+            //请求后端接口获取验证码
+            axios({
+                method: 'post',
+                url: `https://wallet-api-test.launchain.org/v1/sms/code`,
+                data: querystring.stringify({
+                    phone: "+86" + this.phone, //手机号
+                    type: 3 //1-注册，2-修改密码, 3-登录
+                })
+            }).then(res => {
+            }).catch(error => {
+                console.log(error);
+            })
+        },
     }
 }
 </script>
@@ -196,6 +256,39 @@ input {
     margin-bottom: 25px;
     position: relative;
 }
+
+.tab-change{
+    float: right;
+    margin-right: 40px;
+    margin-bottom: 15px;
+    color: #5226f3;
+}
+
+.code-send{
+    margin-left: 40px;
+
+}
+.code-send p{
+    float: left;
+}
+.code-send div {
+    float: left;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 20px;
+    border: solid 1px #5226f3;
+    color: #5226f3;
+    margin: 10px 0 0 16px;
+}
+
+.code-send .count_down {
+    background-color: #7d7d7d;
+    color: #ffffff;
+    border: none
+}
+
 
 .pa {
     position: absolute;
