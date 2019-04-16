@@ -167,6 +167,7 @@ export default {
             this.payStatus = flag;
             this.lodingShow = false;
             this.paySuc = true;
+            this.isNoticeBox = true;
             if (flag) {
                 timer = setTimeout(() => {
                     clearTimeout(timer)
@@ -266,7 +267,8 @@ input {
 
 .code-send{
     margin-left: 40px;
-
+    height: 40px;
+    line-height: 40px;
 }
 .code-send p{
     float: left;
