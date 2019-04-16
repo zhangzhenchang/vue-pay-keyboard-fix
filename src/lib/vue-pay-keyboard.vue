@@ -167,7 +167,7 @@ export default {
             this.payStatus = flag;
             this.lodingShow = false;
             this.paySuc = true;
-            this.isNoticeBox = true;
+            this.isNoticeBox = false;
             if (flag) {
                 timer = setTimeout(() => {
                     clearTimeout(timer)
@@ -188,7 +188,7 @@ export default {
         tabChange(){
             this.isPassword = !this.isPassword;
             if (this.isPassword) {
-                this.pasDigits = 5;
+                this.pasDigits = 6;
             }else{
                 this.pasDigits = 4;
             }
