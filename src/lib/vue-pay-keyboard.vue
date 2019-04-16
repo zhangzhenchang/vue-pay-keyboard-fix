@@ -170,17 +170,18 @@ export default {
             this.isNoticeBox = false;
             if (flag) {
                 timer = setTimeout(() => {
-                    clearTimeout(timer)
-                    this.$emit('close')
+                    clearTimeout(timer);
+                    this.$emit('close');
                     this.keyShow = true;
                     this.paySuc = false;
                     this.$refs.loading.classList.remove('loading-ani')
                 }, 800)
             } else {
                 timer = setTimeout(() => {
-                    clearTimeout(timer)
+                    clearTimeout(timer);
                     this.keyShow = true;
                     this.paySuc = false;
+                    this.isNoticeBox = true;
                     this.$refs.loading.classList.remove('loading-ani')
                 }, 800)
             }
