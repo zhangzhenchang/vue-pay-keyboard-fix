@@ -121,6 +121,9 @@ export default {
     watch:{
         isPay:function () {
             if (this.isPay){
+                this.codeValue = true;
+                this.second = 60;
+                window.clearInterval(this.interval);
                 if (this.status == 0){
                     this.isNoticeBox = false
                 } else if(this.status == 1){
@@ -232,9 +235,6 @@ export default {
                     type: 3 //1-注册，2-修改密码, 3-登录
                 })
             }).then(res => {
-                this.codeValue = true;
-                this.second = 60;
-                window.clearInterval(this.interval);
             }).catch(error => {
                 console.log(error);
             })
