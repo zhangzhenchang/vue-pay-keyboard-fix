@@ -114,6 +114,13 @@ export default {
             return this.payStatus ? '支付成功!' : '支付失败,请重输密码!'
         },
     },
+    watch:{
+        isPay:function () {
+            if (this.isPay){
+                this.isNoticeBox = true
+            }
+        }
+    },
     methods: {
         inputEnd(e, d) {
             this.unhighLight(e.currentTarget, d)
@@ -270,6 +277,7 @@ input {
     margin-left: 40px;
     height: 40px;
     line-height: 40px;
+    margin-bottom: 10px;
 }
 .code-send p{
     float: left;
@@ -283,7 +291,7 @@ input {
     border-radius: 20px;
     border: solid 1px #5226f3;
     color: #5226f3;
-    margin: 10px 0 0 16px;
+    margin: 6px 0 0 16px;
 }
 
 .code-send .count_down {
