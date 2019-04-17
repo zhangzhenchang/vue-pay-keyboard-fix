@@ -87,6 +87,10 @@ export default {
         phone: {
             type: String,
             default: ""
+        },
+        status: {
+            type: Number,
+            default: ""
         }
     },
     data() {
@@ -117,7 +121,11 @@ export default {
     watch:{
         isPay:function () {
             if (this.isPay){
-                this.isNoticeBox = true
+                if (this.status == 0){
+                    this.isNoticeBox = false
+                } else if(this.status == 1){
+                    this.isNoticeBox = true;
+                }
             }
         }
     },
